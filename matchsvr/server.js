@@ -8,9 +8,30 @@ const request = require("request");
 // startup express
 const app = express();
 
+// create the lobbies
+var lobbies = [];
+
 // the servers will contain all possible URLs and the number of games hosted with each
 var lastServerRefresh = 0;
-var servers = [];
+var servers = [
+    {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:81",
+        games: 0,
+        status: "unverified"
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:82",
+        games: 0,
+        status: "unverified"
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:83",
+        games: 0,
+        status: "unverified"
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:84",
+        games: 0,
+        status: "unverified"
+    }
+];
 
 // connect to redis
 var client = redis.createClient(6379, "redis", {
@@ -52,37 +73,6 @@ setInterval(function() {
                 unverified.status = "verified";
             } else {
                 unverified.status = "unavailable";
-            }
-        });
-
-    } else if (timestamp - lastServerRefresh > 60000) { // only refresh at most once a minute
-
-        // get the current list of servers
-        client.lrange("servers", 0, 99, function(err, serverUrls) {
-            if (!err) {
-
-                // mark the servers as unmatched
-                servers.forEach((server) => { server.status = "unmatched"; });
-
-                // find if the server already exists in the list; add it if it doesn't
-                serverUrls.forEach((url) => {
-                    const found = servers.find((server) => { return server.url == url; });
-                    if (found) {
-                        status = "unverified";
-                    } else {
-                        servers.push({
-                            url: url,
-                            games: 0,
-                            status: "unverified"
-                        });
-                    }
-                });
-
-                // remove any unmatched servers
-                servers = servers.filter((server) => { return server.status != "unmatched"; });
-
-            } else {
-                // just leave the server list as is
             }
         });
 
@@ -254,6 +244,3 @@ setInterval(function() {
 app.listen(8000, function() {
     console.log("listening on port 8000...");
 });
-
-
-// use redis for sync'ed lobbies
