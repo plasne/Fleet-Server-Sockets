@@ -12,24 +12,52 @@ const app = express();
 var lobbies = [];
 
 // the servers will contain all possible URLs and the number of games hosted with each
-var lastServerRefresh = 0;
 var servers = [
     {
         url: "http://pelasne-fleet.eastus.cloadapp.azure.com:81",
         games: 0,
-        status: "unverified"
+        status: "unverified",
+        lastQuery: 0
     }, {
         url: "http://pelasne-fleet.eastus.cloadapp.azure.com:82",
         games: 0,
-        status: "unverified"
+        status: "unverified",
+        lastQuery: 0
     }, {
         url: "http://pelasne-fleet.eastus.cloadapp.azure.com:83",
         games: 0,
-        status: "unverified"
+        status: "unverified",
+        lastQuery: 0
     }, {
         url: "http://pelasne-fleet.eastus.cloadapp.azure.com:84",
         games: 0,
-        status: "unverified"
+        status: "unverified",
+        lastQuery: 0
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:85",
+        games: 0,
+        status: "unverified",
+        lastQuery: 0
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:86",
+        games: 0,
+        status: "unverified",
+        lastQuery: 0
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:87",
+        games: 0,
+        status: "unverified",
+        lastQuery: 0
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:88",
+        games: 0,
+        status: "unverified",
+        lastQuery: 0
+    }, {
+        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:89",
+        games: 0,
+        status: "unverified",
+        lastQuery: 0
     }
 ];
 
@@ -56,27 +84,28 @@ client.on("error", function(err) {
 
 // refresh the server list every few seconds
 setInterval(function() {
-    const timestamp = Date.now();
 
-    // verify servers before getting a new list of servers
-    const unverified = servers.findIndex((server) => { return server.status == "unverified"; });
-    if (unverified) {
+    // sort (oldest refresh is first index)
+    servers.sort((a, b) => {
+        return a.lastQuery - b.lastQuery;
+    });
 
-        // contact a server to find out if it up and verify the number of games it has
-        request({
-            method: "GET",
-            url: unverified.url + "/games",
-            json: true
-        }, function(err, response, body) {
-            if (!err && response.statusCode == 200) {
-                unverified.games = body.count;
-                unverified.status = "verified";
-            } else {
-                unverified.status = "unavailable";
-            }
-        });
-
-    }
+    // contact a server to find out if it up and verify the number of games it has
+    const server = servers[0];
+    server.lastQuery = Date.now();
+    request({
+        method: "GET",
+        url: server.url + "/games",
+        json: true
+    }, function(err, response, body) {
+        if (!err && response.statusCode == 200) {
+            server.games = body.count;
+            server.status = "verified";
+        } else {
+            server.status = "unavailable";
+            console.log("server (" + server.url + ") was marked unavailable.");
+        }
+    });
 
 }, 5000);
 
