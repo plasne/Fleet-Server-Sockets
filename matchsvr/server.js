@@ -2,7 +2,6 @@
 // includes
 const express = require("express");
 const uuid = require("node-uuid");
-const redis = require("redis");
 const request = require("request");
 
 // startup express
@@ -95,11 +94,11 @@ setInterval(function() {
     server.lastQuery = Date.now();
     request({
         method: "GET",
-        url: server.url + "/games",
+        url: server.url + "/status",
         json: true
     }, function(err, response, body) {
         if (!err && response.statusCode == 200) {
-            server.games = body.count;
+            server.games = body.games;
             server.status = "verified";
         } else {
             server.status = "unavailable";
