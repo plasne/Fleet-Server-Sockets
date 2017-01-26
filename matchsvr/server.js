@@ -60,27 +60,6 @@ var servers = [
     }
 ];
 
-// connect to redis
-var client = redis.createClient(6379, "redis", {
-    retry_strategy: function(options) {
-        if (options.error && options.error.code === "ECONNREFUSED") {
-            return new Error("1000: The redis server refused the connection.");
-        }
-        if (options.total_retry_time > 1000 * 60 * 5) { // 5 min
-            return new Error("1001: The redis server could not be contacted after 5 minutes of attempts.");
-        }
-        if (options.times_connected > 20) {
-            return new Error("1002: The redis server cold not be contacter after 20 attempts.");
-        }
-        return Math.min(options.attempt * 100, 3000);
-    }
-});
-
-// redis error
-client.on("error", function(err) {
-    throw new Error("1100: redis error: " + err);
-});
-
 // refresh the server list every few seconds
 setInterval(function() {
 
