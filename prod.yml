@@ -7,7 +7,9 @@ services:
          - "80:8000"
         restart: always
         networks:
-         - int
+            int:
+                aliases:
+                 - match
     game01:
         image: "fleet/wssvr:latest"
         ports:
@@ -44,28 +46,36 @@ services:
          - "96:8080"
         restart: always
         networks:
-         - int
+            int:
+                aliases:
+                 - game06
     game07:
         image: "fleet/wssvr:latest"
         ports:
          - "97:8080"
         restart: always
         networks:
-         - int
+            int:
+                aliases:
+                 - game07
     game08:
         image: "fleet/wssvr:latest"
         ports:
          - "98:8080"
         restart: always
         networks:
-         - int
+            int:
+                aliases:
+                 - game08
     game09:
         image: "fleet/wssvr:latest"
         ports:
          - "99:8080"
         restart: always
         networks:
-         - int
+            int:
+                aliases:
+                 - game09
 
 networks:
     int:
