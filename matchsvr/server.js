@@ -116,7 +116,7 @@ app.get("/servers", function(req, res) {
 app.get("/match", function(req, res) {
 
     // make sure all requirements are met
-    const playerId = req.query.playerId;
+    const playerId = req.header("playerId") || req.query.playerId;
     if (playerId == null) {
         res.status(400).send("missing_arguments");
     } else if (servers.length < 1) {
@@ -124,8 +124,8 @@ app.get("/match", function(req, res) {
     } else {
 
         // determine the proper lobby type
-        let type = req.query.type;
-        const opponentId = req.query.opponentId;
+        let type = req.header("type") || req.query.type;
+        const opponentId = req.header("opponentId") || req.query.opponentId;
         if (type) {
             // if a type was specified, use it
         } else if (opponentId) {
