@@ -168,6 +168,7 @@ app.get("/match", function(req, res) {
 
                 // return immediately since a match was found
                 res.send({
+                    status: "matched",
                     playerId: playerId,
                     opponentId: waiting.playerId,
                     gameId: waiting.gameId,
@@ -205,6 +206,7 @@ app.get("/match", function(req, res) {
 
                 // notify
                 res.send({
+                    status: "matched",
                     playerId: self.playerId,
                     opponentId: self.opponentId,
                     gameId: self.gameId,
