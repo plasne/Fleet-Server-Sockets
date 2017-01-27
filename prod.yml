@@ -1,51 +1,61 @@
-version: "2"
+version: "3"
 services:
     match:
         image: "fleet/matchsvr:latest"
         ports:
          - "80:8000"
+        restart: always
     game01:
         image: "fleet/wssvr:latest"
         ports:
          - "81:8001"
          - "91:8080"
+        restart: always
     game02:
         image: "fleet/wssvr:latest"
         ports:
          - "82:8001"
          - "92:8080"
+        restart: always
     game03:
         image: "fleet/wssvr:latest"
         ports:
          - "83:8001"
          - "93:8080"
+        restart: always
     game04:
         image: "fleet/wssvr:latest"
         ports:
          - "84:8001"
          - "94:8080"
+        restart: always
     game05:
         image: "fleet/wssvr:latest"
         ports:
          - "85:8001"
          - "95:8080"
+        restart: always
     game06:
         image: "fleet/wssvr:latest"
         ports:
          - "86:8001"
          - "96:8080"
+        restart: always
     game07:
         image: "fleet/wssvr:latest"
         ports:
          - "87:8001"
          - "97:8080"
+        restart: always
     game08:
         image: "fleet/wssvr:latest"
         ports:
          - "88:8001"
          - "98:8080"
+        restart: always
     game09:
         image: "fleet/wssvr:latest"
         ports:
          - "89:8001"
          - "99:8080"
+        restart: always
