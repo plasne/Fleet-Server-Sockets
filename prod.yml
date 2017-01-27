@@ -79,5 +79,5 @@ services:
 
 networks:
     int:
-        driver: overlay
+        driver: bridge
 
