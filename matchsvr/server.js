@@ -13,47 +13,47 @@ var lobbies = [];
 // the servers will contain all possible URLs and the number of games hosted with each
 var servers = [
     {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:81",
+        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:81",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:82",
+        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:82",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:83",
+        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:83",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:84",
+        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:84",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:85",
+        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:85",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:86",
+        url: "http://game06:86",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:87",
+        url: "http://game07:87",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:88",
+        url: "http://server_game08_1:88",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloadapp.azure.com:89",
+        url: "http://server_game09_1:89",
         games: 0,
         status: "unverified",
         lastQuery: 0

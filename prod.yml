@@ -1,10 +1,13 @@
 version: "3"
+
 services:
     match:
         image: "fleet/matchsvr:latest"
         ports:
          - "80:8000"
         restart: always
+        networks:
+         - int
     game01:
         image: "fleet/wssvr:latest"
         ports:
@@ -38,24 +41,33 @@ services:
     game06:
         image: "fleet/wssvr:latest"
         ports:
-         - "86:8001"
          - "96:8080"
         restart: always
+        networks:
+         - int
     game07:
         image: "fleet/wssvr:latest"
         ports:
-         - "87:8001"
          - "97:8080"
         restart: always
+        networks:
+         - int
     game08:
         image: "fleet/wssvr:latest"
         ports:
-         - "88:8001"
          - "98:8080"
         restart: always
+        networks:
+         - int
     game09:
         image: "fleet/wssvr:latest"
         ports:
-         - "89:8001"
          - "99:8080"
         restart: always
+        networks:
+         - int
+
+networks:
+    int:
+        driver: overlay
+
