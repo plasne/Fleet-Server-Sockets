@@ -1,0 +1,51 @@
+version: "2"
+services:
+    match:
+        image: "fleet/matchsvr:latest"
+        ports:
+         - "80:8000"
+    game01:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "81:8001"
+         - "91:8080"
+    game02:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "82:8001"
+         - "92:8080"
+    game03:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "83:8001"
+         - "93:8080"
+    game04:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "84:8001"
+         - "94:8080"
+    game05:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "85:8001"
+         - "95:8080"
+    game06:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "86:8001"
+         - "96:8080"
+    game07:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "87:8001"
+         - "97:8080"
+    game08:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "88:8001"
+         - "98:8080"
+    game09:
+        image: "fleet/wssvr:latest"
+        ports:
+         - "89:8001"
+         - "99:8080"
