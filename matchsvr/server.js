@@ -13,47 +13,56 @@ var lobbies = [];
 // the servers will contain all possible URLs and the number of games hosted with each
 var servers = [
     {
-        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:81",
+        url: "http://game01:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:81",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:82",
+        url: "http://game02:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:82",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:83",
+        url: "http://game03:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:83",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:84",
+        url: "http://game04:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:84",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://pelasne-fleet.eastus.cloudapp.azure.com:85",
+        url: "http://game05:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:85",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://game06:86",
+        url: "http://game06:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:86",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://game07:87",
+        url: "http://game07:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:87",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://server_game08_1:88",
+        url: "http://game08:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:88",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
-        url: "http://server_game09_1:89",
+        url: "http://game09:8001",
+        ws: "ws://pelasne-fleet.eastus.cloudapp.azure.com:89",
         games: 0,
         status: "unverified",
         lastQuery: 0
@@ -152,7 +161,7 @@ app.get("/match", function(req, res) {
                 server.games++;
                 
                 // notify your opponent
-                waiting.server = server.url;
+                waiting.server = server.ws;
                 waiting.opponentId = playerId;
                 waiting.gameId = uuid.v4();
                 if (waiting.onMatch) waiting.onMatch();
