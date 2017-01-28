@@ -240,6 +240,27 @@ app.get("/match", function(req, res) {
 
 });
 
+app.get("/cancel", function(req, res) {
+
+    // make sure all requirements are met
+    const playerId = req.header("playerId") || req.query.playerId;
+    if (playerId == null) {
+        res.status(400).send("missing_arguments");
+    } else {
+
+        // remove the player from all lobbies
+        lobbies.forEach((lobby) => {
+            const index = lobby.players.findIndex((entry) => { return entry.playerId == playerId });
+            if (index > -1) lobby.players.splice(index, 1);
+        });
+        
+        // respond successfully
+        res.status(200).end();
+
+    }
+
+});
+
 // clean house once a minute
 setInterval(function() {
 
