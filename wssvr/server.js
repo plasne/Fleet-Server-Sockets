@@ -51,11 +51,12 @@ wss.on("connection", function(ws) {
                 if (self) {
                     self.ws = ws;
                 } else {
-                    game.players.push({
+                    self = {
                         id: packet.fromId,
                         ws: ws,
                         lastQuery: 0
-                    });
+                    }
+                    game.players.push(self);
                     game.status = "running";
                 }
 
