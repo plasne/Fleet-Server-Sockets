@@ -117,7 +117,8 @@ app.get("/match", function(req, res) {
 
     // make sure all requirements are met
     const playerId = req.header("playerId") || req.query.playerId;
-    if (playerId == null) {
+    const playerAlias = req.header("playerAlias") || req.query.playerAlias;
+    if (playerId == null || playerAlias == null) {
         res.status(400).send("missing_arguments");
     } else if (servers.length < 1) {
         res.status(500).send("no_servers");
@@ -126,14 +127,15 @@ app.get("/match", function(req, res) {
         // determine the proper lobby type
         let type = req.header("type") || req.query.type;
         const opponentId = req.header("opponentId") || req.query.opponentId;
+        const opponentAlias = req.header("opponentAlias") || req.query.opponentAlias;
         if (type) {
             // if a type was specified, use it
-        } else if (opponentId) {
+        } else if (opponentAlias) {
             // if an opponent was specified, put into that lobby
-            type = "player:" + opponentId;
+            type = "player:" + opponentAlias;
         } else {
             // if nothing was specified, assume the client is waiting to be matched
-            type = "player:" + playerId;
+            type = "player:" + playerAlias;
         }
 
         // find the right lobby, or create one if there isn't already one for this game type
@@ -147,7 +149,7 @@ app.get("/match", function(req, res) {
         }
 
         // see if any other players are in the lobby but aren't matched yet
-        const waiting = lobby.players.find((entry) => { return entry.playerId != playerId && entry.opponentId == null });
+        const waiting = lobby.players.find((entry) => { return entry.playerAlias != playerAlias && entry.opponentAlias == null });
         if (waiting) {
 
             // find an available server with the fewest games
@@ -163,6 +165,7 @@ app.get("/match", function(req, res) {
                 // notify your opponent
                 waiting.server = server.ws;
                 waiting.opponentId = playerId;
+                waiting.opponentAlias = playerAlias;
                 waiting.gameId = uuid.v4();
                 if (waiting.onMatch) waiting.onMatch();
 
@@ -170,7 +173,9 @@ app.get("/match", function(req, res) {
                 res.send({
                     status: "matched",
                     playerId: playerId,
+                    playerAlias: playerAlias,
                     opponentId: waiting.playerId,
+                    opponentAlias: waiting.playerAlias,
                     gameId: waiting.gameId,
                     server: waiting.server
                 });
@@ -185,10 +190,11 @@ app.get("/match", function(req, res) {
         } else {
 
             // see if the entry already exists; create it if it doesn't
-            let self = lobby.players.find((entry) => { return entry.playerId == playerId });
+            let self = lobby.players.find((entry) => { return entry.playerAlias == playerAlias });
             if (self == null) {
                 self = {
                     playerId: playerId,
+                    playerAlias: playerAlias,
                     opponentId: null,
                     gameId: null,
                     server: null
@@ -208,7 +214,9 @@ app.get("/match", function(req, res) {
                 res.send({
                     status: "matched",
                     playerId: self.playerId,
+                    playerAlias: self.playerAlias,
                     opponentId: self.opponentId,
+                    opponentAlias: self.opponentAlias,
                     gameId: self.gameId,
                     server: self.server
                 });
@@ -216,7 +224,7 @@ app.get("/match", function(req, res) {
             }
 
             // see if it has already been matched
-            if (self.opponentId) {
+            if (self.opponentAlias) {
 
                 // close immediately
                 close();
@@ -244,13 +252,14 @@ app.get("/cancel", function(req, res) {
 
     // make sure all requirements are met
     const playerId = req.header("playerId") || req.query.playerId;
-    if (playerId == null) {
+    const playerAlias = req.header("playerAlias") || req.query.playerAlias;
+    if (playerId == null || playerAlias == null) {
         res.status(400).send("missing_arguments");
     } else {
 
         // remove the player from all lobbies
         lobbies.forEach((lobby) => {
-            const index = lobby.players.findIndex((entry) => { return entry.playerId == playerId });
+            const index = lobby.players.findIndex((entry) => { return entry.playerAlias == playerAlias });
             if (index > -1) lobby.players.splice(index, 1);
         });
         
