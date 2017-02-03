@@ -38,7 +38,7 @@ wss.on("connection", function(ws) {
         console.log("-----------------------");
 
         // get a connection to the opponent
-        if (game == null || self == null || opponent == null) {
+        if (game == null || self == null || self.ws == null || opponent == null || opponent.ws == null) {
 
             // get a reference to the game
             game = games.find((game) => { return game.id == packet.gameId });
@@ -102,6 +102,9 @@ wss.on("connection", function(ws) {
             if (selfIndex > -1) game.players.splice(selfIndex, 1);
             
             // send a packet to the other player announcing the disconnect
+            if (opponent && opponent.ws) {
+                opponent.ws.send(JSON.stringify({ cmd: "quit" }));
+            }
 
         } else {
 
@@ -122,7 +125,23 @@ wss.on("connection", function(ws) {
     });
 
     ws.on("close", function() {
-        console.log("player %s disconnected.");
+
+        // drop reference to ws
+        self.ws = null;
+
+        // notify the opponent
+        if (opponent && opponent.ws) {
+            console.log("notified opponent %s of disconnect.", opponent.id);
+            opponent.ws.send(JSON.stringify({ cmd: "fail" }));
+        }
+
+        // log
+        if (self) {
+            console.log("player %s disconnected.", self.id);
+        } else {
+            console.log("unknown player disconnected.");
+        }
+        
     });
 
     ws.on("error", function(e) {
@@ -145,7 +164,7 @@ setInterval(function() {
         game.players.forEach((player) => {
             if (timestamp - player.lastQuery > 1000 * 60 * 20 || game.status === "disconnected") {
                 game.status = "disconnected";
-                player.ws.send(JSON.stringify({ cmd: "disconnect" }));
+                player.ws.send(JSON.stringify({ cmd: "inactive" }));
             }
         });
     });
