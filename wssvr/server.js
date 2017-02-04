@@ -112,6 +112,7 @@ wss.on("connection", function(ws) {
             if (opponent && opponent.ws) {
                 opponent.ws.send(raw, function(err) {
                     if (!err) {
+                        console.log("success from %s to %s", self.id, opponent.id);
                         ws.send(JSON.stringify({ cmd: "success" }));
                     } else {
                         console.log("send exception: " + err);
@@ -119,6 +120,7 @@ wss.on("connection", function(ws) {
                     }
                 });
             } else {
+                console.log("fail from %s to %s", self.id, opponent.id);
                 ws.send(JSON.stringify({ cmd: "fail" }));
             }
 
