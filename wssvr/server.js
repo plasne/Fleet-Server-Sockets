@@ -109,7 +109,7 @@ wss.on("connection", function(ws) {
         } else {
 
             // if there is an opponent connection, pass the message through, otherwise, fail
-            if (opponent) {
+            if (opponent && opponent.ws) {
                 opponent.ws.send(raw, function(err) {
                     if (err) {
                         console.log("send exception: " + err);
