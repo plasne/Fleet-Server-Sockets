@@ -120,7 +120,7 @@ wss.on("connection", function(ws) {
                     }
                 });
             } else {
-                console.log("fail from %s to %s", self.id, opponent.id);
+                console.log("fail from %s", self.id);
                 ws.send(JSON.stringify({ cmd: "fail" }));
             }
 
