@@ -125,23 +125,7 @@ wss.on("connection", function(ws) {
     });
 
     ws.on("close", function() {
-
-        // drop reference to ws
         self.ws = null;
-
-        // notify the opponent
-        if (opponent && opponent.ws) {
-            console.log("notified opponent %s of disconnect.", opponent.id);
-            opponent.ws.send(JSON.stringify({ cmd: "fail" }));
-        }
-
-        // log
-        if (self) {
-            console.log("player %s disconnected.", self.id);
-        } else {
-            console.log("unknown player disconnected.");
-        }
-        
     });
 
     ws.on("error", function(e) {
@@ -155,19 +139,48 @@ app.listen(8001, function() {
     console.log("listening on port 8001...");
 });
 
-// clean-up old games
-setInterval(function() {
-    const timestamp = Date.now();
+function ping() {
 
-    // disconnect any game that has a player that is dormant for 20 minutes or more
+    // ping the players in each game
     games.forEach((game) => {
+
+        // ping each player to see if they are active or not
         game.players.forEach((player) => {
-            if (timestamp - player.lastQuery > 1000 * 60 * 20 || game.status === "disconnected") {
-                game.status = "disconnected";
-                player.ws.send(JSON.stringify({ cmd: "inactive" }));
+            if (player.ws) {
+                player.ws.send(JSON.stringify({ cmd: "hello" }), function(err) {
+                    player.connected = (err == null);
+                    if (player.connected) player.lastQuery = Date.now();
+                });
+            } else {
+                player.connected = false;
             }
         });
+
+        // tell any connected players about the disconnected ones
+        const connected = game.players.filter((player) => { return player.connected; });
+        const disconnected = game.players.filter((player) => { return !player.connected; });
+        if (disconnected.length > 0 && Date.now() - disconnected[0].lastQuery > 1000 * 90) {
+            game.status = "disconnected";
+        }
+        if (connected.length > 0 && disconnected.length > 0) {
+            connected.forEach((player) => {
+                if (game.status == "disconnected") {
+                    player.ws.send(JSON.stringify({ cmd: "inactive" }));
+                } else {
+                    player.ws.send(JSON.stringify({ cmd: "disconnect" }));
+                }
+            });
+        }
+
     });
+
+    // filter to active games
     games = games.filter((game) => { return game.status !== "disconnected" });
-    
-}, 60000);
+
+    // ping again after 2 seconds
+    setTimeout(ping, 2000);
+
+}
+
+// ping every 2 seconds
+setTimeout(ping, 2000);
