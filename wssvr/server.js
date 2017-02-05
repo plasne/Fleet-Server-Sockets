@@ -1,11 +1,12 @@
 
 // includes
-const websocket = require("ws");
+const websocket = require("uws");
 const express = require("express");
 
 // startup express and websockets
 const app = express();
 const wss = new websocket.Server({ port: 8080 });
+wss.startAutoPing(2000);
 
 // globals
 var games = [];
@@ -129,7 +130,23 @@ wss.on("connection", function(ws) {
     });
 
     ws.on("close", function() {
+
+        // drop reference to ws
         self.ws = null;
+
+        // notify the opponent
+        if (opponent && opponent.ws) {
+            console.log("notified opponent %s of disconnect.", opponent.id);
+            opponent.ws.send(JSON.stringify({ cmd: "fail" }));
+        }
+
+        // log
+        if (self) {
+            console.log("player %s disconnected.", self.id);
+        } else {
+            console.log("unknown player disconnected.");
+        }
+
     });
 
     ws.on("error", function(e) {
