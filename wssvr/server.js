@@ -114,15 +114,21 @@ wss.on("connection", function(ws) {
                 opponent.ws.send(raw, function(err) {
                     if (!err) {
                         console.log("success from %s to %s", self.id, opponent.id);
-                        ws.send(JSON.stringify({ cmd: "success" }));
+                        ws.send(JSON.stringify({ cmd: "success" }), function(err) {
+                            // simply catch error
+                        });
                     } else {
                         console.log("send exception: " + err);
-                        ws.send(JSON.stringify({ cmd: "fail" }));
+                        ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
+                            // simply catch error
+                        });
                     }
                 });
             } else {
                 console.log("fail from %s", self.id);
-                ws.send(JSON.stringify({ cmd: "fail" }));
+                ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
+                    // simply catch error
+                });
             }
 
         }
@@ -137,7 +143,9 @@ wss.on("connection", function(ws) {
         // notify the opponent
         if (opponent && opponent.ws) {
             console.log("notified opponent %s of disconnect.", opponent.id);
-            opponent.ws.send(JSON.stringify({ cmd: "fail" }));
+            opponent.ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
+                // simply catch error
+            });
         }
 
         // log
@@ -169,7 +177,11 @@ setInterval(function() {
         game.players.forEach((player) => {
             if (timestamp - player.lastQuery > 1000 * 60 * 2 || game.status === "disconnected") {
                 game.status = "disconnected";
-                player.ws.send(JSON.stringify({ cmd: "inactive" }));
+                if (player.ws) {
+                    player.ws.send(JSON.stringify({ cmd: "inactive" }), function(err) {
+                        // simply catch error
+                    });
+                }
             }
         });
     });
