@@ -172,10 +172,10 @@ app.listen(8001, function() {
 setInterval(function() {
     const timestamp = Date.now();
 
-    // disconnect any game that has a player that is dormant for 2 minutes or more
+    // disconnect any game that has a player that is dormant for 15 minutes or more
     games.forEach((game) => {
         game.players.forEach((player) => {
-            if (timestamp - player.lastQuery > 1000 * 60 * 2 || game.status === "disconnected") {
+            if (timestamp - player.lastQuery > 1000 * 60 * 15 || game.status === "disconnected") {
                 game.status = "disconnected";
                 if (player.ws) {
                     player.ws.send(JSON.stringify({ cmd: "inactive" }), function(err) {
