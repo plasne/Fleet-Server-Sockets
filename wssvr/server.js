@@ -135,6 +135,7 @@ wss.on("connection", function(ws) {
 
     });
 
+    /*
     ws.on("close", function() {
 
         // drop reference to ws
@@ -160,6 +161,7 @@ wss.on("connection", function(ws) {
     ws.on("error", function(e) {
         console.log("error:" + e.message);
     });
+    */
 
 });
 
