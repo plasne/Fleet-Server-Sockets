@@ -32,20 +32,12 @@ wss.on("connection", function(ws) {
         // parse into a packet
         let packet = JSON.parse(raw);
 
-        console.log("-----------------------");
-        console.log("game: " + packet.gameId);
-        console.log("from: " + packet.fromId);
-        console.log(" cmd: " + packet.cmd);
-        console.log("-----------------------");
-
         // get a connection to the opponent
         if (game == null || self == null || self.ws == null || opponent == null || opponent.ws == null) {
 
             // get a reference to the game
             game = games.find((game) => { return game.id == packet.gameId });
             if (game != null) {
-
-                console.log("update or add self " + packet.fromId);
 
                 // update or add self
                 self = game.players.find((player) => { return player.id == packet.fromId });
@@ -65,8 +57,6 @@ wss.on("connection", function(ws) {
                 opponent = game.players.find((player) => { return player.id != packet.fromId });
 
             } else {
-
-                console.log("create a game reference " + packet.fromId);
 
                 // create self
                 self = {
@@ -89,6 +79,8 @@ wss.on("connection", function(ws) {
 
         // record the lastQuery
         self.lastQuery = Date.now();
+
+        let status = "OK";
 
         // process the message
         if (packet.cmd == "hello") {
@@ -116,11 +108,21 @@ wss.on("connection", function(ws) {
                         console.log("success from %s to %s", self.id, opponent.id);
                         ws.send(JSON.stringify({ cmd: "success" }), function(err) {
                             // simply catch error
+                            if (!err) {
+                                status = "success";
+                            } else {
+                                status = "success; but doesn't know it";
+                            }
                         });
                     } else {
                         console.log("send exception: " + err);
                         ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
                             // simply catch error
+                            if (!err) {
+                                status = "fail";
+                            } else {
+                                status = "faile; but doesn't know it";
+                            }
                         });
                     }
                 });
@@ -128,10 +130,23 @@ wss.on("connection", function(ws) {
                 console.log("fail from %s", self.id);
                 ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
                     // simply catch error
+                    if (!err) {
+                        status = "fail (no-client)";
+                    } else {
+                        status = "fail (no-client); but doesn't know it";
+                    }
                 });
             }
 
         }
+
+        console.log("-----------------------");
+        console.log("game: " + packet.gameId);
+        console.log("from: " + packet.fromId);
+        console.log(" cmd: " + packet.cmd);
+        console.log(" idx: " + packet.index);
+        console.log("stat: " + status);
+        console.log("-----------------------");
 
     });
 
