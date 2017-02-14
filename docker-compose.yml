@@ -11,81 +11,81 @@ services:
                 aliases:
                  - match
     game01:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "81:8080"
+         - "81:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game01
     game02:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "82:8080"
+         - "82:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game02
     game03:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "83:8080"
+         - "83:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game03
     game04:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "84:8080"
+         - "84:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game04
     game05:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "85:8080"
+         - "85:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game05
     game06:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "86:8080"
+         - "86:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game06
     game07:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "87:8080"
+         - "87:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game07
     game08:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "88:8080"
+         - "88:8000"
         restart: always
         networks:
             int:
                 aliases:
                  - game08
     game09:
-        image: "fleet/wssvr:latest"
+        image: "fleet/httpsvr:latest"
         ports:
-         - "89:8080"
+         - "89:8000"
         restart: always
         networks:
             int:

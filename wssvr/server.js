@@ -105,7 +105,6 @@ wss.on("connection", function(ws) {
             if (opponent && opponent.ws) {
                 opponent.ws.send(raw, function(err) {
                     if (!err) {
-                        console.log("success from %s to %s", self.id, opponent.id);
                         ws.send(JSON.stringify({ cmd: "success" }), function(err) {
                             // simply catch error
                             if (!err) {
@@ -121,13 +120,12 @@ wss.on("connection", function(ws) {
                             if (!err) {
                                 status = "fail";
                             } else {
-                                status = "faile; but doesn't know it";
+                                status = "fail; but doesn't know it";
                             }
                         });
                     }
                 });
             } else {
-                console.log("fail from %s", self.id);
                 ws.send(JSON.stringify({ cmd: "fail" }), function(err) {
                     // simply catch error
                     if (!err) {
