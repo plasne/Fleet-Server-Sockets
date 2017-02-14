@@ -43,9 +43,9 @@ app.post("/msg", function(req, res) {
             if (dispatch()) {
                 res.status(200).end();
             } else {
-                res.status(408).end();
+                res.status(500).end();
             }
-        }, 10000);
+        }, 2000);
     }
 
 });
@@ -66,7 +66,7 @@ app.get("/msg", function(req, res) {
     setTimeout(function() {
         if (games[ref]) {
             delete games[ref];
-            res.status(408).end();
+            res.status(200).end();
         }
     }, 30000);
 
