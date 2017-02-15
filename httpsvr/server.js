@@ -1,9 +1,11 @@
 
 // includes
 const express = require("express");
+const bodyParser = require("body-parser");
 
 // startup express
 const app = express();
+app.use(bodyParser.raw());
 
 // track the games
 const games = {};
@@ -20,13 +22,15 @@ app.post("/msg", function(req, res) {
 
     // get the parameters
     const gameId = req.header("gameId") || req.query.gameId;
-    const fromId = req.header("fromId") || req.query.fromId;
     const toId = req.header("toId") || req.query.toId;
     const ref = gameId + "." + toId;
+
+    // SHOULD ADD SOME VALIDATION OF PARAMS
 
     // create the dispatch function
     const dispatch = function() {
         if (games[ref]) {
+            console.log("relay: " + req.body);
             games[ref].send(req.body);
             delete games[ref];
             return true;
@@ -45,7 +49,7 @@ app.post("/msg", function(req, res) {
             } else {
                 res.status(500).end();
             }
-        }, 2000);
+        }, 10000);
     }
 
 });
@@ -56,7 +60,6 @@ app.get("/msg", function(req, res) {
     // get the parameters
     const gameId = req.header("gameId") || req.query.gameId;
     const fromId = req.header("fromId") || req.query.fromId;
-    const toId = req.header("toId") || req.query.toId;
     const ref = gameId + "." + fromId;
 
     // create a reference to the response object
