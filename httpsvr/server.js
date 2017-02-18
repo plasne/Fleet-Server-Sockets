@@ -5,7 +5,9 @@ const bodyParser = require("body-parser");
 
 // startup express
 const app = express();
-app.use(bodyParser.raw());
+app.use(bodyParser.raw({
+    type: "*/*"
+}));
 
 // track the games
 const games = {};
@@ -36,7 +38,6 @@ app.post("/msg", function(req, res) {
             delete games[ref];
             return true;
         } else {
-            console.log(games);
             return false;
         }
     }
