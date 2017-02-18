@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 // startup express
 const app = express();
 app.use(bodyParser.raw({
-    type: "*/*"
+    type: function() { return true; }
 }));
 
 // track the games
