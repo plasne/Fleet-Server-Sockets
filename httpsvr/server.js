@@ -31,6 +31,7 @@ app.post("/msg", function(req, res) {
     const dispatch = function() {
         if (games[ref]) {
             clearTimeout(games[ref].timeout);
+            console.log("body:" + req.body.length);
             games[ref].res.send(req.body);
             delete games[ref];
             return true;
