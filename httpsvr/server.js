@@ -30,11 +30,12 @@ app.post("/msg", function(req, res) {
     // create the dispatch function
     const dispatch = function() {
         if (games[ref]) {
-            console.log("relay: " + req.body);
-            games[ref].send(req.body);
+            clearTimeout(games[ref].timeout);
+            games[ref].res.send(req.body);
             delete games[ref];
             return true;
         } else {
+            console.log(games);
             return false;
         }
     }
@@ -49,7 +50,7 @@ app.post("/msg", function(req, res) {
             } else {
                 res.status(500).end();
             }
-        }, 10000);
+        }, 2000);
     }
 
 });
@@ -62,16 +63,17 @@ app.get("/msg", function(req, res) {
     const fromId = req.header("fromId") || req.query.fromId;
     const ref = gameId + "." + fromId;
 
-    // create a reference to the response object
-    games[ref] = res;
-
     // allow the connection to stay open for 30 seconds
-    setTimeout(function() {
-        if (games[ref]) {
-            delete games[ref];
-            res.status(200).end();
-        }
+    const timeout = setTimeout(function() {
+        delete games[ref];
+        res.status(200).end();
     }, 30000);
+
+    // create a reference to the response object
+    games[ref] = {
+        res: res,
+        timeout: timeout
+    };
 
 });
 
