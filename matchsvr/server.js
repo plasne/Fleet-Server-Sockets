@@ -14,55 +14,55 @@ var lobbies = [];
 var servers = [
     {
         url: "http://game01:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:81",
+        endpoint: "http://192.168.11.42:8001",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game02:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:82",
+        endpoint: "http://192.168.11.42:8002",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game03:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:83",
+        endpoint: "http://192.168.11.42:8003",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game04:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:84",
+        endpoint: "http://192.168.11.42:8004",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game05:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:85",
+        endpoint: "http://192.168.11.42:8005",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game06:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:86",
+        endpoint: "http://192.168.11.42:8006",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game07:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:87",
+        endpoint: "http://192.168.11.42:8007",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game08:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:88",
+        endpoint: "http://192.168.11.42:8008",
         games: 0,
         status: "unverified",
         lastQuery: 0
     }, {
         url: "http://game09:8000",
-        endpoint: "http://pelasne-fleet.eastus.cloudapp.azure.com:89",
+        endpoint: "http://192.168.11.42:8009",
         games: 0,
         status: "unverified",
         lastQuery: 0
