@@ -28,8 +28,7 @@ app.get("/status", function(req, res) {
     });
 });
 
-// post a message to a partner
-app.post("/msg", function(req, res) {
+function postOrPut(req, res) {
 
     // get the parameters
     const gameId = req.header("gameId") || req.query.gameId;
@@ -69,6 +68,14 @@ app.post("/msg", function(req, res) {
         }, 2000);
     }
 
+}
+
+// post a message to a partner
+app.put("/msg", function(req, res) {
+    postOrPut(req, res);
+});
+app.post("/msg", function(req, res) {
+    postOrPut(req, res);
 });
 
 // listen for a message from a partner
@@ -94,6 +101,7 @@ app.get("/msg", function(req, res) {
                         } else {
                             for (let id in game.players) {
                                 if (now - game.players[id].last > player_timeout) {
+                                    console.log("disconnected " + id + ", now: " + now + " - " + game.players[id].last + " = " + (now - game.players[id].last) + ".");
                                     game.status = "disconnected";
                                 }
                             }
@@ -103,6 +111,7 @@ app.get("/msg", function(req, res) {
                     case "disconnected":
                         clearInterval(game.cleanup);
                         setTimeout(function() {
+                            console.log("tombstoned " + gameId);
                             delete games[gameId];
                         }, tombstone_timeout);
                         break;
